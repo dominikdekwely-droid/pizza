@@ -2,7 +2,6 @@
 -- SCHEMA.SQL: Создание структуры базы данных Пиццерии
 -- ==========================================
 
--- Удаляем таблицы, если они уже есть (чтобы можно было перезапускать скрипт)
 DROP TABLE IF EXISTS order_items CASCADE;
 DROP TABLE IF EXISTS orders CASCADE;
 DROP TABLE IF EXISTS product_ingredients CASCADE;
