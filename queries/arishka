@@ -1,34 +1,31 @@
--- ==========================================
--- НЕДЕЛЯ 3: Выборка из одной таблицы (Участник 2)
--- ==========================================
 
--- 1. Вопрос: Какие товары стоят от 100 до 500 рублей и доступны для заказа?
--- (BETWEEN, AND, ORDER BY)
+1. Какие товары стоят от 100 до 500 рублей и доступны для заказа?
+
 SELECT name, base_price, is_available 
 FROM products 
 WHERE base_price BETWEEN 100 AND 500 AND is_available = true
 ORDER BY base_price ASC;
 
--- 2. Вопрос: Какие клиенты имеют почту на домене mail.ru или yandex.ru?
--- (LIKE с OR)
+2. Какие клиенты имеют почту на домене mail.ru или yandex.ru?
+
 SELECT first_name, last_name, email 
 FROM customers 
 WHERE email LIKE '%@mail.ru' OR email LIKE '%@yandex.ru';
 
--- 3. Вопрос: Вывести уникальные размеры пиццы (без повторений).
--- (DISTINCT, ORDER BY)
+3. Вывести уникальные размеры пиццы (без повторений).
+
 SELECT DISTINCT name, diameter_cm 
 FROM sizes 
 ORDER BY diameter_cm DESC;
 
--- 4. Вопрос: Найти все заказы, для которых не указан адрес доставки.
--- (Используется: IS NULL)
+4. Найти все заказы, для которых не указан адрес доставки.
+
 SELECT id, customer_id, employee_id, status, total_amount 
 FROM orders 
 WHERE delivery_address IS NULL;
 
--- 5. Вопрос: Вывести названия всех ингредиентов, которые измеряются в граммах, и добавить столбец с ценой за 1 кг (условная наценка 10%).
--- (Вычисляемый столбец, WHERE)
+5. Вывести названия всех ингредиентов, которые измеряются в граммах, и добавить столбец с ценой за 1 кг (условная наценка 10%).
+
 SELECT name, unit,
        ROUND(100.0 * 1.10, 2) AS price_per_kg_with_markup
 FROM ingredients 
