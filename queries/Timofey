@@ -1,1 +1,53 @@
+-- выборка 5 вопросов --
+-- 1 вопрос Вывести уникальные названия категорий продуктов, у которых в описании упоминается слово «соус» или «дополнительные», отсортировав их по алфавиту в обратном порядке. --
+	SELECT DISTINCT name FROM categories
+	where (description like '%соус%' or  description like '%дополнительные%')
+	order by name desc;
 
+--2 Вопрос: Найти всех клиентов, у которых заполнено поле с электронной почтой
+--(не пустое) и которые проживают в домах с номерами от 10 до 20 (включительно).
+--Результат отсортировать по ID клиента.
+select * from customers
+where email is not null
+and (address like '%10%'
+or address like '%11%'
+or address like '%12%'
+or address like '%13%'
+or address like '%14%'
+or address like '%15%'
+or address like '%16%'
+or address like '%17%'
+or address like '%18%'
+or address like '%19%'
+or address like '%20%')
+order by id asc
+
+-- 3 Вопрос: Вывести список сотрудников-мужчин,
+--которые занимают должности повара или курьера.
+--Результат необходимо отсортировать по дате приема на работу так,
+--чтобы первыми шли самые новые сотрудники.
+
+select * from employees 
+where first_name in ('Иван', 'Петр', 'Дмитрий', 'Сергей', 'Алексей', 'Артем', 'Кирилл','Максим', 'Андрей', 'Никита')
+and (role = 'chef' or role = 'courier')
+order by hired_at desc
+
+-- 4 вопрос Вывести названия всех продуктов, их базовую цену, а также 
+--рассчитать «цену со скидкой 10%» (вычисляемый столбец). 
+--Показать только те продукты, которые сейчас доступны к заказу,
+--и цена которых от 450 до 700 рублей.
+
+select name, base_price, base_price*0.9 from products 
+where is_available is true 
+and base_price*0.9 between 450 and 700
+
+-- 5 запрос Найти все поставки, которые были совершены в период
+-- с 1 по 15 мая 2024 года, и у которых статус — received.
+--Вывести ID поставки, ID поставщика, дату и общую стоимость
+-- Отсортировать по стоимости (от большей к меньшей).
+
+
+select supplier_id, employee_id, supply_date, total_cost  from supplies
+where supply_date between '2024-05-1' and '2024-05-15 23:59:59'
+and status = 'received'
+order by total_cost desc
