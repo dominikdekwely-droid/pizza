@@ -1,6 +1,3 @@
--- ==========================================
--- SCHEMA.SQL: Создание структуры базы данных Пиццерии
--- ==========================================
 
 DROP TABLE IF EXISTS order_items CASCADE;
 DROP TABLE IF EXISTS orders CASCADE;
@@ -15,7 +12,7 @@ DROP TABLE IF EXISTS sizes CASCADE;
 DROP TABLE IF EXISTS ingredients CASCADE;
 DROP TABLE IF EXISTS categories CASCADE;
 
--- 1. СПРАВОЧНИКИ
+
 CREATE TABLE categories (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE,
@@ -55,7 +52,7 @@ CREATE TABLE customers (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 2. ПОСТАВЩИКИ И СКЛАД
+
 CREATE TABLE suppliers (
     id SERIAL PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
@@ -83,7 +80,7 @@ CREATE TABLE supply_items (
     UNIQUE(supply_id, ingredient_id) -- В одной поставке ингредиент встречается один раз
 );
 
--- 3. ПРОДАЖИ И МЕНЮ
+
 CREATE TABLE products (
     id SERIAL PRIMARY KEY,
     category_id INT NOT NULL REFERENCES categories(id),
@@ -119,7 +116,7 @@ CREATE TABLE order_items (
     price_at_moment NUMERIC(10,2) NOT NULL
 );
 
--- Индексы для ускорения запросов (требование ТЗ)
+-- Индексы для ускорения запросов 
 CREATE INDEX idx_orders_customer ON orders(customer_id);
 CREATE INDEX idx_orders_status ON orders(status);
 CREATE INDEX idx_products_category ON products(category_id);
