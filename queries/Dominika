@@ -3,7 +3,7 @@
 
 SELECT id, first_name, last_name, role, hired_at 
 FROM employees 
-WHERE (role = 'manager' OR role = 'chef') AND hired_at > '2023-05-01'
+WHERE role IN ('manager', 'chef') AND hired_at > '2023-05-01'
 ORDER BY hired_at DESC;
 
 -- 2. Какие клиенты проживают по адресам, содержащим слово 'Ленина' или 'Пушкина'?
