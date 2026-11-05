@@ -1,1 +1,42 @@
+-- 1. Вопрос: Вывести список всех поставок вместе с названием поставщика и именем сотрудника, который принял товар.
+-- (Используется: INNER JOIN, соединение 3-х таблиц)
+SELECT sup.id AS supply_id, sup.supply_date, s.name AS supplier_name, e.first_name, e.last_name
+FROM supplies sup
+INNER JOIN suppliers s ON sup.supplier_id = s.id
+INNER JOIN employees e ON sup.employee_id = e.id
+ORDER BY sup.supply_date DESC;
 
+-- 2. Вопрос: Вывести список всех ингредиентов и название поставщика, у которого они закупались. Если ингредиент ни разу не закупали, он все равно должен быть в списке.
+-- (Используется: LEFT JOIN, соединение 4-х таблиц)
+SELECT i.name AS ingredient_name, s.name AS supplier_name
+FROM ingredients i
+LEFT JOIN supply_items si ON i.id = si.ingredient_id
+LEFT JOIN supplies sup ON si.supply_id = sup.id
+LEFT JOIN suppliers s ON sup.supplier_id = s.id
+ORDER BY i.name;
+
+-- 3. Вопрос: Вывести подробную информацию о заказах: номер заказа, имя клиента, имя сотрудника, принявшего заказ, и название товара в этом заказе. (Соединение 4-х таблиц).
+-- (Используется: соединение 3+ таблиц, INNER JOIN)
+SELECT o.id AS order_id, c.first_name AS customer_name, e.first_name AS employee_name, p.name AS product_name
+FROM orders o
+JOIN customers c ON o.customer_id = c.id
+JOIN employees e ON o.employee_id = e.id
+JOIN order_items oi ON o.id = oi.order_id
+JOIN products p ON oi.product_id = p.id
+ORDER BY o.id;
+
+-- 4. Вопрос: Найти все заказы, в которых есть товары категории 'Пицца' (category_id = 1), и вывести номер заказа и название пиццы.
+-- (Используется: INNER JOIN, соединение 3-х таблиц)
+SELECT o.id AS order_id, p.name AS pizza_name
+FROM orders o
+INNER JOIN order_items oi ON o.id = oi.order_id
+INNER JOIN products p ON oi.product_id = p.id
+WHERE p.category_id = 1
+ORDER BY o.id;
+
+-- 5. Вопрос: Вывести единый список названий всех товаров (пицц, напитков) и всех ингредиентов, чтобы увидеть полный ассортимент склада и меню.
+-- (Используется: UNION)
+SELECT name, 'Товар' AS item_type FROM products
+UNION
+SELECT name, 'Ингредиент' AS item_type FROM ingredients
+ORDER BY name;
