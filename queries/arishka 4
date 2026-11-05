@@ -1,1 +1,39 @@
+-- 1. Вопрос: Какое количество ингредиентов содержится в каждой пицце? Вывести название пиццы и количество ингредиентов в ней.
+SELECT products.name, COUNT(product_ingredients.ingredient_id)
+FROM products
+JOIN product_ingredients ON products.id = product_ingredients.product_id
+GROUP BY products.name
+ORDER BY COUNT(product_ingredients.ingredient_id) DESC;
 
+-- 2. Вопрос: Какая общая сумма (total_cost) была потрачена на закупку ингредиентов у каждого поставщика? Вывести только поставщиков, у которых сумма закупок больше 30 000 рублей.
+SELECT suppliers.name, SUM(supplies.total_cost)
+FROM suppliers
+JOIN supplies ON suppliers.id = supplies.supplier_id
+GROUP BY suppliers.name
+HAVING SUM(supplies.total_cost) > 30000
+ORDER BY SUM(supplies.total_cost) DESC;
+
+-- 3. Вопрос: Вывести минимальную и максимальную закупочную цену (purchase_price) для каждого ингредиента. Отсортировать по названию ингредиента.
+SELECT ingredients.name, 
+       MIN(supply_items.purchase_price), 
+       MAX(supply_items.purchase_price)
+FROM ingredients
+JOIN supply_items ON ingredients.id = supply_items.ingredient_id
+GROUP BY ingredients.name
+ORDER BY ingredients.name;
+
+-- 4. Вопрос: Сколько сотрудников было принято на работу в каждом году? Вывести только те годы, в которые было принято больше 4 человек.
+SELECT EXTRACT(YEAR FROM hired_at), COUNT(id)
+FROM employees
+GROUP BY EXTRACT(YEAR FROM hired_at)
+HAVING COUNT(id) > 4
+ORDER BY EXTRACT(YEAR FROM hired_at);
+
+-- 5. Вопрос: Вывести средний чек (average order amount) для каждого клиента, но учитывать только заказы со статусом 'done', сделанные в 2024 году. Отсортировать по убыванию среднего чека.
+SELECT customer_id, ROUND(AVG(total_amount), 2)
+FROM orders
+WHERE status = 'done' 
+  AND created_at >= '2024-01-01' 
+  AND created_at < '2025-01-01'
+GROUP BY customer_id
+ORDER BY ROUND(AVG(total_amount), 2) DESC;
