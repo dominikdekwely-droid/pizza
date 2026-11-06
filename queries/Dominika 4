@@ -1,1 +1,41 @@
+-- 1. Вопрос: Какое количество товаров (products) есть в каждой категории? Вывести название категории и количество товаров.
 
+SELECT categories.name, COUNT(products.id)
+FROM categories
+JOIN products ON categories.id = products.category_id
+GROUP BY categories.name
+ORDER BY COUNT(products.id) DESC;
+
+-- 2. Вопрос: Какая общая сумма (выручка) была получена по каждому статусу заказа? Вывести только те статусы, где сумма больше 5000 рублей.
+
+SELECT status, SUM(total_amount)
+FROM orders
+GROUP BY status
+HAVING SUM(total_amount) > 5000
+ORDER BY SUM(total_amount) DESC;
+
+-- 3. Вопрос: Какая средняя, минимальная и максимальная цена товара в каждой категории? (Группировка по двум столбцам: категория и доступность).
+
+SELECT category_id, is_available, 
+       ROUND(AVG(base_price), 2), 
+       MIN(base_price), 
+       MAX(base_price)
+FROM products
+GROUP BY category_id, is_available
+ORDER BY category_id, is_available;
+
+-- 4. Вопрос: Сколько сотрудников работает на каждой должности (роли)? Вывести только те должности, где работает больше 2 человек.
+
+SELECT role, COUNT(id)
+FROM employees
+GROUP BY role
+HAVING COUNT(id) > 2
+ORDER BY COUNT(id) DESC;
+
+-- 5. Вопрос: Вывести сумму заказов по каждому клиенту, но учитывать только заказы со статусом 'done', созданные в июне 2024 года. Отсортировать по убыванию суммы. (Сочетание WHERE + GROUP BY + ORDER BY).
+
+SELECT customer_id, SUM(total_amount)
+FROM orders
+WHERE status = 'done' AND created_at >= '2024-06-01' AND created_at < '2024-07-01'
+GROUP BY customer_id
+ORDER BY SUM(total_amount) DESC;
